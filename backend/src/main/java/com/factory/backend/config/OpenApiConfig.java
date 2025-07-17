@@ -26,6 +26,6 @@ public class OpenApiConfig {
                 )
                 .externalDocs(new ExternalDocumentation()
                         .description("GitHub Repository")
-                        .url("https://github.com/mudit201"));
+                        .url("https://github.com/mudit201/factory_management_app/tree/main/backend"));
     }
 }
