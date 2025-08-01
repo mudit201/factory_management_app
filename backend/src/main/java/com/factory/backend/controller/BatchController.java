@@ -20,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:5173")
 public class BatchController {
     @Autowired
     BatchService service;
@@ -99,7 +100,7 @@ public class BatchController {
             if ("Product does not exist".equals(res)) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>("Added new batch",HttpStatus.CREATED);
         } catch (DataIntegrityViolationException ex) {
             // This exception usually wraps SQLIntegrityConstraintViolationException
             return new ResponseEntity<>("Product does not exist", HttpStatus.NOT_FOUND);

@@ -20,7 +20,12 @@ public class ProductService {
     @Autowired
     ProductsRepo repo;
 
-    public List<Products> getAllProducts(){return repo.findAll();}
+    public List<ProductDto> getAllProducts(){
+        List<Products> products = repo.findAll();
+        return products.stream()
+                .map(this::convertProductToProductDto)
+                .collect(Collectors.toList());
+    }
 
     public Boolean findProduct(String product){
         Boolean val = (repo.findProductById(product)!=null);

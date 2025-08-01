@@ -16,12 +16,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ProductsController {
     @Autowired
     ProductService service;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Products>> getAllProducts(){
+    public ResponseEntity<List<ProductDto>> getAllProducts(){
         return new ResponseEntity<>(service.getAllProducts(), HttpStatus.OK);
     }
 
@@ -35,10 +36,10 @@ public class ProductsController {
     }
 
     @PostMapping("/products")
-    public ResponseEntity<?> addNewProduct(@RequestBody Products product){
+    public ResponseEntity<String> addNewProduct(@RequestBody Products product){
         try {
             ProductDto createdProduct = service.addNewProduct(product);
-            return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+            return new ResponseEntity<>("Added new product successfully", HttpStatus.CREATED);
         } catch (DuplicateProductException e){
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(e.getMessage());
@@ -55,7 +56,6 @@ public class ProductsController {
     //not so optimistic approach ig
     //other approaches:
 
-    @Transactional
     @DeleteMapping("/products/{productId}")
     public ResponseEntity<?> deleteProductById(@PathVariable String productId){
         return service.deleteProductById(productId);
