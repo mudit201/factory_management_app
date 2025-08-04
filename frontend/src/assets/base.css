@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+:root {
+  --color-bg: #1f2f4a;
+  --color-primary: #8c3de6;
+  --color-primary-dark: #2d0858;
+
+  --border-radius: 20px;
+  --font-family: 'Open Sans', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: #f4f4f4;
+  color: var(--color-text);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-family);
+  color: var(--color-bg);
+  margin-bottom: 1.5em;
+  font-size: 1em;
+}
+
+th, td {
+  padding: 12px 15px;
+  border: 1px solid #a8c5e9;
+  text-align: left;
+}
+
+thead th {
+  background-color: var(--color-primary);
+  color: white;
+  font-weight: 700;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #eaf4fd;
+}
+
+tbody tr:hover {
+  background-color: #d0e9fc;
+  cursor: pointer;
+}
+
+.spinner {
+  margin: 40px auto;
+  width: 50px;
+  height: 50px;
+  border: 6px solid #ccc;
+  border-top-color: #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s ease;
+}
+
+.close-button:hover {
+  color: #000;
+}
