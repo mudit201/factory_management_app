@@ -17,7 +17,7 @@ export const mutations: MutationTree<ProductsState> = {
     state.products = products;
   },
   [MutationTypes.ADD_PRODUCT](state, product: Product) {
-    state.products.push(product);
+    state.products = [...state.products, product];
   },
   [MutationTypes.DELETE_PRODUCT](state, productId: string) {
     state.products = state.products.filter(p => p.product !== productId);

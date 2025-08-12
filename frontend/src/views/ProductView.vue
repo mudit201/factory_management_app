@@ -48,7 +48,6 @@
 </template>
 
 <script setup lang="ts">
-// import { useProductStore } from '@/stores/productStore';
 import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { VButton, VIcon, VProgressRing } from '@vonage/vivid-vue';
@@ -56,21 +55,12 @@ import ProductFormModal from '@/components/ProductFormModal.vue';
 import { useBannerStore } from '@/stores/bannerStore';
 
 const store = useStore();
-// const productStore = useProductStore();
-
-// const {loading, error} = productStore;
-// const products = computed(()=>  productStore.products);
-// const productCount =  computed(()=>  productStore.productCount);
-
-// connot import raw states
-// const {loading, error} = store.state.productStore;
 const loading = computed(()=> store.state.productStore.loading);
 const error = computed(()=> store.state.productStore.error);
 const products = computed(()=>  store.state.productStore.products);
 const productCount =  computed(()=>  store.getters['productStore/getProductCount']);
 
 onMounted(async ()=>{
-  // await productStore.loadProducts();
   await store.dispatch("productStore/loadProducts");
 })
 

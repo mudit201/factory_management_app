@@ -9,7 +9,7 @@
           <VTextField label="Product code"  v-model="product" helper-text="First two letter of product - size (Ex- CO-600 for cola 600 ml)"></VTextField>
           <VTextField label="Flavor"  v-model="flavor" helper-text="Flavor of the product (Ex: Cola)"></VTextField>
           <VTextField label="Size"  v-model="size" helper-text="size and quantity (Ex: 600 ml)"></VTextField>
-          <VTextField label="Minimum Batch Time"  :v-model="min_batch_time" helper-text="in mins"></VTextField>
+          <VNumberField label="Minimum Batch Time"  :valueAsNumber="minBatchTime" @update:valueAsNumber="val => minBatchTime = val" helper-text="in mins"></VNumberField>
           <VButton appearance="filled" type="submit" label="Add" icon="add-solid" v-if="!loading"></VButton>
           <VProgressRing v-else-if="loading"></VProgressRing>
         </VLayout>
@@ -20,34 +20,25 @@
 
 <script setup lang="ts">
 import { useBannerStore } from '@/stores/bannerStore';
-import { useProductStore } from '@/stores/productStore';
-import type { BatchInput } from '@/types/Batch';
 import type { Product } from '@/types/Product';
 
-import { VTextField, VButton, VLayout, VProgressRing } from '@vonage/vivid-vue';
+import { VTextField, VButton, VLayout, VProgressRing, VNumberField } from '@vonage/vivid-vue';
 import { computed, onMounted,ref } from 'vue';
 import { useStore } from 'vuex';
 
-const productStore= useProductStore();
 const store = useStore();
 
 
 const product = ref<string>('');
 const flavor = ref<string>('');
 const size = ref<string>('');
-const min_batch_time = ref<number | undefined>(undefined);
+const minBatchTime = ref<number | undefined>(undefined);
 
-// const data= computed(()=>({
-//   product: product.value,
-//   flavor: flavor.value,
-//   size: size.value,
-//   minBatchTime: minBatchTime.value,
-// }));
 const data= computed(()=>({
   product: product.value,
   flavor: flavor.value,
   size: size.value,
-  min_batch_time: min_batch_time.value,
+  minBatchTime: minBatchTime.value,
 }));
 
 const loading = computed(()=> store.state.productStore.loading);
@@ -56,9 +47,13 @@ const message = computed(()=> store.state.productStore.message);
 
 
 const handleSubmit = (async ()=> {
-  console.log(data.value)
+  if(!product.value || !flavor.value || !size.value || minBatchTime.value === undefined){
+    useBannerStore().showBannerMessage("Please fill all fields", true);
+    closeModal();
+    return;
+  }
+  console.log("Submitting product data:", data.value)
   const res = await store.dispatch("productStore/addProduct", data.value as Product);
-
 
   let msg;
   let isError = false;
@@ -73,14 +68,16 @@ const handleSubmit = (async ()=> {
   product.value = '';
   flavor.value = '';
   size.value = '';
-  min_batch_time.value = undefined;
+  minBatchTime.value = undefined;
   console.log("asfsfs", msg);
   closeModal();
+  await store.dispatch("productStore/loadProducts");
+
   useBannerStore().showBannerMessage(msg, isError);
 });
 
 onMounted(async()=>{
-  await productStore.loadProducts();
+  await store.dispatch("productStore/loadProducts");
 });
 
 const emit = defineEmits(['close']);

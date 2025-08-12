@@ -9,12 +9,6 @@
             v-on:click="toggleVisibility(operator.operator)"
             subtitle="Operator"
         >
-          <!-- <div
-            class="profile-icon"
-            :style="{backgroundColor: iconColor}"
-          >
-            {{ firstLetter }}
-          </div> -->
           <template #icon>
             <VIcon label="profile-solid" :size="5"></VIcon>
           </template>

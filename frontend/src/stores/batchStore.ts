@@ -46,6 +46,7 @@ export const useBatchStore = defineStore("batchStore", {
 
       try{
         const response = await addBatch(data);
+        this.loadBatches();
         this.message = response.data;
       }catch(error){
         console.error("Error adding batch:", error.response.status);
@@ -55,7 +56,7 @@ export const useBatchStore = defineStore("batchStore", {
       }
       return this.message;
     },
-    
+
     async deleteBatch(batchId: number) {
       this.loading = true;
       this.error = null;
