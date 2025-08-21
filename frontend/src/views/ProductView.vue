@@ -12,7 +12,10 @@
           </VButton>
     </div>
     <!-- <div v-if="loading" class="spinner"></div> -->
-    <VProgressRing v-if="loading" />
+    <VProgressRing
+      v-if="loading"
+      data-testid="progress-ring"
+      />
 
 
     <div v-if="error" class="error">{{ error }}</div>
@@ -31,7 +34,7 @@
           <td>
             {{ prod.product }}
             <VIcon name="delete-solid"
-
+            data-testid="delete-icon"
             @click="handleDelete(prod.product)"
             />
           </td>

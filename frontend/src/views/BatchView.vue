@@ -30,7 +30,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- <VPagination :total=20 shape="pill"> -->
         <tr v-for="batch in batches" :key="batch.batch">
           <th scope="row" style="position: relative;">
             {{ batch.batch }}
@@ -45,7 +44,6 @@
           <td data-title="End Time">{{ batch.end_time }}</td>
           <td data-title="Date">{{ batch.date }}</td>
         </tr>
-      <!-- </VPagination> -->
       </tbody>
     </table>
 
