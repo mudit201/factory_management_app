@@ -23,7 +23,7 @@ FROM nginx:alpine
 
 # Copy the built static files from the build stage to nginx www directory
 COPY --from=build /app/dist /usr/share/nginx/html
-
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 # Expose port 80
 EXPOSE 80
 

@@ -81,16 +81,9 @@ function toggleModal() {
 
 const handleDelete = async (productId: string) => {
   await store.dispatch("productStore/deleteProduct", productId);
-  let msg;
-  let isError = false;
-  if (store.state.productStore.error) {
-    isError = true;
-    msg = store.state.productStore.error;
-  }
-  useBannerStore().showBannerMessage(
-    msg || "Product deleted successfully",
-    isError
-  );
+  const msg = store.state.productStore.error || "Product deleted successfully"; // Ensure 'msg' is always a string
+  const isError = !!store.state.productStore.error;
+  useBannerStore().showBannerMessage(msg, isError);
 };
 
 

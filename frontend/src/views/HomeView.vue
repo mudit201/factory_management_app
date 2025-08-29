@@ -8,21 +8,9 @@
       <!-- Statistics Cards -->
       <section class="cards-section">
         <div class="cards-grid">
-          <CountCard
-            :numLen="productCount"
-            valName="Products"
-            class="card-item"
-          />
-          <CountCard
-            :numLen="batchCount"
-            valName="Batches"
-            class="card-item"
-          />
-          <CountCard
-            :numLen="operatorCount"
-            valName="Operators"
-            class="card-item"
-          />
+          <CountCard :numLen="productCount" valName="Products" class="card-item" />
+          <CountCard :numLen="batchCount" valName="Batches" class="card-item" />
+          <CountCard :numLen="operatorCount" valName="Operators" class="card-item" />
           <div class="status-card card-item">
             <div class="status-header">
               <h3>System Status</h3>
@@ -46,15 +34,19 @@
           <div class="metric-card">
             <h4 class="metric-title">Current Batch</h4>
             <p class="metric-value">{{ currentBatch }}</p>
-            <VSearchableSelect placeholder="Select a batch..." icon="group-5-solid" :v-model="currentBatch">
-            <VOption
-              v-for="batch in batches"
-              :key="batch.value"
-              :label="batch.label"
-              :value="batch.label"
-              :text="batch.label"
-              @click="handleBatchChange(batch.value)"
-            />
+            <VSearchableSelect
+              placeholder="Select a batch..."
+              icon="group-5-solid"
+              :v-model="currentBatch"
+            >
+              <VOption
+                v-for="batch in batches"
+                :key="batch.value"
+                :label="batch.label"
+                :value="batch.label"
+                :text="batch.label"
+                @click="handleBatchChange(batch.value)"
+              />
             </VSearchableSelect>
           </div>
           <div class="metric-card">
@@ -72,20 +64,20 @@
 </template>
 
 <script setup lang="ts">
-import { useBatchStore } from "@/stores/batchStore";
-import CountCard from "../components/CountCard.vue";
-import { useProductStore } from "@/stores/productStore";
-import { computed, onMounted, ref } from "vue";
-import { useOperatorStore } from "@/stores/operatorStore";
-import { useLineDowntimeStore } from "@/stores/lineDowntimeStore";
-import LineChart from "@/components/LineChart.vue";
-import { VSearchableSelect, VOption } from "@vonage/vivid-vue";
+import { useBatchStore } from '@/stores/batchStore'
+import CountCard from '../components/CountCard.vue'
+import { useProductStore } from '@/stores/productStore'
+import { computed, onMounted, ref } from 'vue'
+import { useOperatorStore } from '@/stores/operatorStore'
+import { useLineDowntimeStore } from '@/stores/lineDowntimeStore'
+import LineChart from '@/components/LineChart.vue'
+import { VSearchableSelect, VOption } from '@vonage/vivid-vue'
 
-const productStore = useProductStore();
-const productCount = computed(() => productStore.productCount);
+const productStore = useProductStore()
+const productCount = computed(() => productStore.productCount)
 
-const batchStore = useBatchStore();
-const batchCount = computed(() => batchStore.batchCount);
+const batchStore = useBatchStore()
+const batchCount = computed(() => batchStore.batchCount)
 // const batches = computed(() => {
 //   const list = [];
 //   for (const batch of batchStore.batches) {
@@ -95,38 +87,41 @@ const batchCount = computed(() => batchStore.batchCount);
 //   return list;
 // });
 const batches = computed(() => {
-  return batchStore.batches.map(batch => ({
+  return batchStore.batches.map((batch) => ({
     label: String(batch.batch),
-    value: batch.batch
-  }));
-});
-const currentBatch = ref(422111);
+    value: batch.batch,
+  }))
+})
+const currentBatch = ref(422111)
 
-const operatorStore = useOperatorStore();
-const operatorCount = computed(() => operatorStore.operatorCount);
+const operatorStore = useOperatorStore()
+const operatorCount = computed(() => operatorStore.operatorCount)
 
-const lineDowntimeStore = useLineDowntimeStore();
-const lineDowntime = computed(() => lineDowntimeStore.lineDowntime);
+const lineDowntimeStore = useLineDowntimeStore()
+const lineDowntime = computed(() => lineDowntimeStore.lineDowntime)
 
 // Calculate total downtime from all failure modes
 const totalDowntime = computed(() => {
-  if (!lineDowntime.value) return 0;
+  if (!lineDowntime.value) return 0
   return Object.keys(lineDowntime.value)
-    .filter(key => key.startsWith('f'))
-    .reduce((sum, key) => sum + (lineDowntime.value[key] || 0), 0);
-});
+    .filter((key): key is string => typeof key === 'string' && key.startsWith('f'))
+    .reduce(
+      (sum, key) => sum + (lineDowntime.value?.[key as keyof typeof lineDowntime.value] || 0),
+      0,
+    )
+})
 
 // Calculate efficiency based on downtime (example calculation)
 const efficiency = computed(() => {
-  const total = totalDowntime.value;
-  const maxTime = 480; // 8 hours in minutes as example
-  return total > 0 ? Math.max(0, Math.round(((maxTime - total) / maxTime) * 100)) : 100;
-});
+  const total = totalDowntime.value
+  const maxTime = 480 // 8 hours in minutes as example
+  return total > 0 ? Math.max(0, Math.round(((maxTime - total) / maxTime) * 100)) : 100
+})
 
 const handleBatchChange = async (newBatch: number) => {
-  currentBatch.value = newBatch;
-  await lineDowntimeStore.getLineDowntime(currentBatch.value);
-};
+  currentBatch.value = newBatch
+  await lineDowntimeStore.getLineDowntime(currentBatch.value)
+}
 
 onMounted(async () => {
   try {
@@ -134,25 +129,23 @@ onMounted(async () => {
       productStore.loadProducts(),
       batchStore.loadBatches(),
       operatorStore.loadOperators(),
-      lineDowntimeStore.getLineDowntime(currentBatch.value)
-    ]);
-    console.log('All data loaded successfully');
-    console.log('Line downtime:', lineDowntimeStore.lineDowntime);
+      lineDowntimeStore.getLineDowntime(currentBatch.value),
+    ])
+    console.log('All data loaded successfully')
+    console.log('Line downtime:', lineDowntimeStore.lineDowntime)
   } catch (error) {
-    console.error('Error loading dashboard data:', error);
+    console.error('Error loading dashboard data:', error)
   }
-});
+})
 </script>
 
 <style lang="postcss" scoped>
 .main-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-
 }
 
 .header-section {
-
   margin-bottom: 32px;
   padding-bottom: 24px;
 }
@@ -199,7 +192,9 @@ onMounted(async () => {
 
 .card-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .status-card {
@@ -240,7 +235,8 @@ onMounted(async () => {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -252,7 +248,9 @@ onMounted(async () => {
   background: white;
   border-radius: 20px;
   padding: 32px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
   border: 1px solid #e2e8f0;
 }
 

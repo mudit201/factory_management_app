@@ -12,7 +12,7 @@
     }
   ],
   "compilerOptions": {
-    "module": "NodeNext",
-    "types": [ "vuex"],
+    "module": "esnext",
+    "types": [ "vuex", "vuex/types"],
   }
 }

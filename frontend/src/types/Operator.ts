@@ -1,3 +1,3 @@
 export interface Operator{
-  name: string
+  operator: string
 }

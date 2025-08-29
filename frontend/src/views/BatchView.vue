@@ -8,8 +8,7 @@
         icon="fax-add-solid"
         label="Add New Batch"
         @click="toggleModal()"
-        >
-        <!-- <template #icon>Add New Batch</template> -->
+      >
       </VButton>
     </div>
 
@@ -31,11 +30,18 @@
       </thead>
       <tbody>
         <tr v-for="batch in batches" :key="batch.batch">
-          <th scope="row" style="position: relative;">
+          <th scope="row" style="position: relative">
             {{ batch.batch }}
-            <VIcon name="delete-solid"
-            style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); padding-right: 10px;"
-            @click="handleDelete(batch.batch)"
+            <VIcon
+              name="delete-solid"
+              style="
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                padding-right: 10px;
+              "
+              @click="handleDelete(batch.batch)"
             />
           </th>
           <td data-title="Product">{{ batch.product }}</td>
@@ -47,73 +53,56 @@
       </tbody>
     </table>
 
-
     <p v-else>No batches found.</p>
   </div>
 
-  <BatchFormModal v-if="showModal" @close="showModal=false"></BatchFormModal>
+  <BatchFormModal v-if="showModal" @close="showModal = false"></BatchFormModal>
 </template>
 
 <script setup lang="ts">
-import { useBatchStore } from "@/stores/batchStore";
-import { computed, onMounted, ref } from "vue";
-import { VButton, VIcon, VPagination } from "@vonage/vivid-vue";
-import BatchFormModal from "@/components/BatchFormModal.vue";
-import { useBannerStore } from "@/stores/bannerStore";
+import { useBatchStore } from '@/stores/batchStore'
+import { computed, onMounted, ref } from 'vue'
+import { VButton, VIcon } from '@vonage/vivid-vue'
+import BatchFormModal from '@/components/BatchFormModal.vue'
+import { useBannerStore } from '@/stores/bannerStore'
 
-const batchStore = useBatchStore();
-const {loading, error} = batchStore;
-const batches = computed(()=> batchStore.batches);
-const batchCount = computed(()=> batchStore.batchCount);
+const batchStore = useBatchStore()
+const { loading, error } = batchStore
+const batches = computed(() => batchStore.batches)
+const batchCount = computed(() => batchStore.batchCount)
 
-const currentPage = ref(0);
-const pageSize = 20;
-
-const paginatedBatches = computed(()=>{
-  const start = currentPage.value * pageSize;
-  return batches.value.slice(start, start + pageSize);
-})
-
-const showModal= ref(false);
+const showModal = ref(false)
 
 function toggleModal() {
-  if(!showModal.value){
-    console.log(showModal.value);
-    showModal.value = true;
-  }else{
-    console.log(showModal.value);
-    showModal.value = false;
+  if (!showModal.value) {
+    console.log(showModal.value)
+    showModal.value = true
+  } else {
+    console.log(showModal.value)
+    showModal.value = false
   }
 }
 
-// function handleDelete(batchId: number) {
-//   batchStore.deleteBatch(batchId);
-// }
-
 const handleDelete = async (batchId: number) => {
-  await batchStore.deleteBatch(batchId);
-  let msg = batchStore.message;
-  let isError = !!batchStore.error;
-  if (isError) {
-    msg = batchStore.error;
-  }
-  useBannerStore().showBannerMessage(msg, isError);
-};
+  await batchStore.deleteBatch(batchId)
+  const msg = batchStore.message || batchStore.error || 'Batch deleted successfully' // Ensure 'msg' is always a string
+  const isError = !!batchStore.error 
+  useBannerStore().showBannerMessage(msg, isError)
+}
 
-onMounted(async ()=>{
-  await batchStore.loadBatches();
+onMounted(async () => {
+  await batchStore.loadBatches()
 })
 </script>
 
 <style scoped>
-
 /* Error message */
 .error {
   color: red;
   margin-top: 10px;
 }
 
-.header-container{
+.header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;

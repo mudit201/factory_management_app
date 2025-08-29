@@ -9,11 +9,7 @@
             v-on:click="toggleVisibility(operator.operator)"
             subtitle="Operator"
         >
-          <template #icon>
-            <VIcon label="profile-solid" :size="5"></VIcon>
-          </template>
-
-
+        <VIcon label="profile-solid" :size="5"></VIcon>
         </VCard>
       </div>
     </VLayout>
@@ -30,7 +26,7 @@ import ProfileCard from '@/components/ProfileCard.vue';
 import OperatorBatchModal from '@/components/OperatorBatchModal.vue'
 import { useBatchStore } from '@/stores/batchStore';
 
-import { VLayout, VCard, VIcon, VButton, VBanner } from '@vonage/vivid-vue';
+import { VLayout, VCard, VIcon } from '@vonage/vivid-vue';
 
 const operatorStore = useOperatorStore();
 const operators = computed(()=> operatorStore.operators);
