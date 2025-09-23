@@ -1,8 +1,11 @@
 package com.factory.backend.integration;
 
 import com.factory.backend.dto.BatchDto;
+import com.factory.backend.dto.ProductDto;
+import com.factory.backend.model.Products;
 import com.factory.backend.repository.BatchRepo;
 import com.factory.backend.model.Batch;
+import com.factory.backend.repository.ProductsRepo;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.junit.After;
@@ -37,18 +40,26 @@ public class BatchIntegrationTest {
     @Autowired
     private BatchRepo batchRepo;
 
+    @Autowired
+    private ProductsRepo productsRepo;
+
     private String baseUrl;
 
     @Before
     public void setup(){
         baseUrl = "http://localhost:" + port + "/api/batches";
+        Products products = new Products();
+        products.setProduct("CO-600");
+        products.setFlavor("Chocolate");
+        products.setSize("10 g");
+        products.setMinBatchTime(30);
+        productsRepo.save(products);
     }
 
     @After
     public void tearDown() {
-        // Clean up any data if necessary
-//        restTemplate.delete(baseUrl);
         batchRepo.deleteAll();
+        productsRepo.deleteAll();
     }
 
     @Test

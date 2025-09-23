@@ -12,7 +12,6 @@ import java.math.BigInteger;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:5173")
 public class LineDowntimeController {
     @Autowired
     LineDowntimeService service;
