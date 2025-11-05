@@ -48,20 +48,15 @@ import {
   VButton,
   VLayout,
   VProgressRing,
-  VBanner,
 } from '@vonage/vivid-vue'
 import { computed, onMounted, ref } from 'vue'
-
-// const props= defineProps<{
-
-// }>();
 
 const productStore = useProductStore()
 
 const productList = computed(() => {
   return productStore.products.map((p) => ({
     label: `${p.product} - ${p.flavor} - ${p.size}`,
-    value: p.product, // or use a more unique identifier if available
+    value: p.product, 
   }))
 })
 

@@ -12,15 +12,6 @@ import { useLineDowntimeStore } from '@/stores/lineDowntimeStore';
 
 Chart.register(...registerables);
 const lineDowntimeStore = useLineDowntimeStore();
-// const factorDescriptions = [];
-// for(let i = 1; i <= 12; i++) {
-//   const data = await lineDowntimeStore.getLineDowntimeFactorDescription(i);
-//   factorDescriptions.push({
-//     factor: i,
-//     description: data.description,
-//     operatorError: data.operatorError
-//   });
-// }
 
 interface DowntimeData {
   batch: number;

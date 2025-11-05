@@ -9,3 +9,5 @@ export const getBatchesByOperatorName = (operatorName: string) =>
 
 export const addBatch= async (data: BatchInput) => await api.post<string>("/batches", data)
 export const deleteBatch = async (batchId: number) => await api.delete(`/batch/${batchId}`)
+
+export const getBatchById = async (batchId: number) => await api.get<Batch>(`/batches/${batchId}`)

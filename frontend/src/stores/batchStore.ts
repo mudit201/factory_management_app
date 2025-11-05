@@ -3,6 +3,7 @@ import {
   getAllBatches,
   getBatchesByOperatorName,
   deleteBatch,
+  getBatchById,
 } from '@/services/batchService'
 import type { Batch, BatchInput } from '@/types/Batch'
 import { defineStore } from 'pinia'
@@ -94,5 +95,36 @@ export const useBatchStore = defineStore('batchStore', {
         this.loading = false
       }
     },
+
+    async getBatchTotalTimeById(batchId: number) {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await getBatchById(batchId)
+        const startTime = response.data.start_time // e.g., "11:50:00"
+        const endTime = response.data.end_time     // e.g., "13:15:00"
+
+        const [startH, startM, startS] = startTime.split(':').map(Number)
+        const [endH, endM, endS] = endTime.split(':').map(Number)
+
+        const startMinutes = startH * 60 + startM + (startS || 0) / 60
+        const endMinutes = endH * 60 + endM + (endS || 0) / 60
+
+        // Handle negative results in case time crosses midnight
+        const total_time = (endMinutes - startMinutes + 1440) % 1440
+
+        console.log('Total time in minutes:', total_time)
+        return total_time
+      } catch (error) {
+        if (error instanceof Error) {
+          this.error = error.message || 'Failed to fetch batch'
+        } else {
+          this.error = 'An unknown error occurred'
+        }
+      } finally {
+        this.loading = false
+      }
+    },
+
   },
 })

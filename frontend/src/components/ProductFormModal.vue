@@ -60,7 +60,7 @@ const data = computed(() => ({
   product: product.value,
   flavor: flavor.value,
   size: size.value,
-  minBatchTime: minBatchTime.value, // Corrected property name to match 'Product' type
+  minBatchTime: minBatchTime.value, 
 }))
 
 const loading = computed(() => store.state.productStore.loading)

@@ -15,6 +15,15 @@ interface ProductStoreState {
   products: Product[]
 }
 
+jest.mock('vue-router', () => ({
+  useRoute: () => ({
+    params: {},
+  }),
+  useRouter: () => ({
+    push: jest.fn(),
+  }),
+}));
+
 describe('ProductView.vue', () => {
   let store: Store<unknown>
   let actions: { [key: string]: jest.Mock }
@@ -122,7 +131,6 @@ describe('ProductView.vue', () => {
     expect(wrapper.find('.error').text()).toBe('Failed to load products')
   })
 
-  // ...existing code...
 
   jest.mock('@/stores/bannerStore', () => ({
     useBannerStore: () => ({
@@ -143,17 +151,21 @@ describe('ProductView.vue', () => {
       global: { plugins: [store] },
     })
 
-    // Modal should not be visible initially
     expect(wrapper.findComponent({ name: 'ProductFormModal' }).exists()).toBe(false)
 
-    // Click to open modal
     await wrapper.findComponent({ name: 'VButton' }).trigger('click')
     expect(wrapper.findComponent({ name: 'ProductFormModal' }).exists()).toBe(true)
 
-    // Simulate close event from modal
     await wrapper.findComponent({ name: 'ProductFormModal' }).vm.$emit('close')
     await wrapper.vm.$nextTick()
     expect(wrapper.findComponent({ name: 'ProductFormModal' }).exists()).toBe(false)
+  })
+
+  it('matches the snapshot', () => {
+    const wrapper = shallowMount(ProductView, {
+      global: { plugins: [store] },
+    })
+    expect(wrapper.html()).toMatchSnapshot()
   })
 
   // it('shows success banner when product is deleted successfully', async () => {

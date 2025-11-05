@@ -5,7 +5,6 @@
       <p class="page-subtitle">Real-time manufacturing analytics and insights</p>
     </div>
     <div class="content-wrapper">
-      <!-- Statistics Cards -->
       <section class="cards-section">
         <div class="cards-grid">
           <CountCard :numLen="productCount" valName="Products" class="card-item" />
@@ -23,13 +22,11 @@
         </div>
       </section>
 
-      <!-- Charts Section -->
       <section class="charts-section">
         <div class="chart-wrapper">
           <LineChart :data="lineDowntime" />
         </div>
 
-        <!-- Additional metrics row -->
         <div class="metrics-row">
           <div class="metric-card">
             <h4 class="metric-title">Current Batch</h4>
@@ -100,6 +97,8 @@ const operatorCount = computed(() => operatorStore.operatorCount)
 const lineDowntimeStore = useLineDowntimeStore()
 const lineDowntime = computed(() => lineDowntimeStore.lineDowntime)
 
+
+
 // Calculate total downtime from all failure modes
 const totalDowntime = computed(() => {
   if (!lineDowntime.value) return 0
@@ -111,16 +110,27 @@ const totalDowntime = computed(() => {
     )
 })
 
-// Calculate efficiency based on downtime (example calculation)
+const maxTime = ref<number>(0)
+
+const fetchMaxTime = async (batchId: number) => {
+  const time = await batchStore.getBatchTotalTimeById(batchId)
+  maxTime.value = typeof time === 'number' ? time : 0
+}
+
+// Calculate efficiency based on downtime 
 const efficiency = computed(() => {
   const total = totalDowntime.value
-  const maxTime = 480 // 8 hours in minutes as example
-  return total > 0 ? Math.max(0, Math.round(((maxTime - total) / maxTime) * 100)) : 100
+  // const maxTime = 480 // 8 hours in minutes as example
+  // const maxTime = await batchStore.getBatchTotalTimeById(currentBatch.value)
+  console.log('Max time for batch', currentBatch.value, ':', maxTime)
+
+  return total > 0 ? Math.max(0, Math.round(((maxTime.value - total) / maxTime.value) * 100)) : 100
 })
 
 const handleBatchChange = async (newBatch: number) => {
   currentBatch.value = newBatch
   await lineDowntimeStore.getLineDowntime(currentBatch.value)
+  await fetchMaxTime(newBatch)
 }
 
 onMounted(async () => {
@@ -130,6 +140,7 @@ onMounted(async () => {
       batchStore.loadBatches(),
       operatorStore.loadOperators(),
       lineDowntimeStore.getLineDowntime(currentBatch.value),
+      fetchMaxTime(currentBatch.value),
     ])
     console.log('All data loaded successfully')
     console.log('Line downtime:', lineDowntimeStore.lineDowntime)

@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductView.vue matches the snapshot 1`] = `
+"<div>
+  <div class="header-container">
+    <h2>Products (2)</h2>
+    <v-button-stub appearance="outlined" icon="fax-add-solid" label="Add New Product" shape="pill"></v-button-stub>
+  </div><!-- <div v-if="loading" class="spinner"></div> -->
+  <!--v-if-->
+  <!--v-if-->
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Flavor</th>
+        <th>Size</th>
+        <th>Min Batch Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Product A <v-icon-stub name="delete-solid" data-testid="delete-icon"></v-icon-stub>
+        </td>
+        <td>Vanilla</td>
+        <td>Large</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Product B <v-icon-stub name="delete-solid" data-testid="delete-icon"></v-icon-stub>
+        </td>
+        <td>Chocolate</td>
+        <td>Medium</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!--v-if-->"
+`;
