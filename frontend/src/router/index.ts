@@ -19,13 +19,24 @@ const router = createRouter({
     },
     {
       path: '/products',
-      name: 'product',
+      name: 'products',
       component: ProductView,
     },
     {
       path: '/operators',
       name: 'operators',
       component: OperatorView,
+    },
+    {
+      path: '/operators/:operator_name',
+      name: 'operator_name',
+      component: OperatorView,
+      props: true,
+    },
+    {
+      path: '/products/new_product',
+      name: 'new_product',
+      component: ProductView,
     },
   ],
 })

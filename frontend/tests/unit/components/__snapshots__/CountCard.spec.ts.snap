@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CountCard.vue renders numLen and valName props correctly 1`] = `
+"<div class="card-body">
+  <div class="num-background">42</div>
+  <div class="val-name">Batches</div>
+</div>"
+`;

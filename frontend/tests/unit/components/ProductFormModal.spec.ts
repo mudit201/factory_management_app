@@ -95,39 +95,4 @@ describe('ProductFormModal.vue', () => {
     });
   });
 
-  // Add more tests for form submission, validation, loading, etc.
 });
-
-
-  // "devDependencies": {
-  //   "@babel/core": "^7.28.0",
-  //   "@babel/preset-env": "^7.28.0",
-  //   "@babel/preset-typescript": "^7.27.1",
-  //   "@tsconfig/node22": "^22.0.2",
-  //   "@types/jest": "^30.0.0",
-  //   "@types/node": "^22.15.32",
-  //   "@vitejs/plugin-vue": "^6.0.0",
-  //   "@vue/eslint-config-prettier": "^10.2.0",
-  //   "@vue/eslint-config-typescript": "^14.5.1",
-  //   "@vue/test-utils": "^2.4.6",
-  //   "@vue/tsconfig": "^0.7.0",
-  //   "@vue/vue3-jest": "^29.2.6",
-  //   "autoprefixer": "^10.4.21",
-  //   "babel-jest": "^29.7.0",
-  //   "eslint": "^9.29.0",
-  //   "eslint-plugin-cypress": "^5.1.0",
-  //   "eslint-plugin-vue": "~10.2.0",
-  //   "jiti": "^2.4.2",
-  //   "npm-run-all2": "^8.0.4",
-  //   "postcss": "^8.5.6",
-  //   "postcss-custom-properties": "^14.0.6",
-  //   "postcss-nested": "^7.0.2",
-  //   "postcss-preset-env": "^10.2.4",
-  //   "prettier": "3.5.3",
-  //   "start-server-and-test": "^2.0.12",
-  //   "ts-node": "^10.9.2",
-  //   "typescript": "~5.8.0",
-  //   "vite": "^7.0.0",
-  //   "vite-plugin-vue-devtools": "^7.7.7",
-  //   "vue-tsc": "^2.2.10"
-  // }

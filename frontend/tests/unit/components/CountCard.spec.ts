@@ -11,5 +11,6 @@ describe('CountCard.vue', () => {
     })
     expect(wrapper.find('.num-background').text()).toBe('42')
     expect(wrapper.find('.val-name').text()).toBe('Batches')
+    expect(wrapper.html()).toMatchSnapshot()
   })
 })

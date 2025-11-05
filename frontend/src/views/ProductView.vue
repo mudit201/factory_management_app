@@ -7,7 +7,7 @@
           appearance="outlined"
           icon="fax-add-solid"
           label="Add New Product"
-          @click="toggleModal()"
+          @click="openModal()"
           >
           </VButton>
     </div>
@@ -47,36 +47,49 @@
 
     <p v-else>No products found.</p>
   </div>
-  <ProductFormModal v-if="showModal" @close="showModal=false"></ProductFormModal>
+  <ProductFormModal v-if="showModal" @close="closeModal"></ProductFormModal>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { VButton, VIcon, VProgressRing } from '@vonage/vivid-vue';
 import ProductFormModal from '@/components/ProductFormModal.vue';
 import { useBannerStore } from '@/stores/bannerStore';
+import { useRoute, useRouter } from 'vue-router';
 
 const store = useStore();
 const loading = computed(()=> store.state.productStore.loading);
 const error = computed(()=> store.state.productStore.error);
 const products = computed(()=>  store.state.productStore.products);
 const productCount =  computed(()=>  store.getters['productStore/getProductCount']);
+const route = useRoute();
+// const showModal = ref(!!route.params.showModal);
+const showModal = ref(false);
+const router = useRouter();
+
+watch(
+  () => route.name,
+  (newName) => {
+    showModal.value = newName === 'new_product';
+  }, {immediate: true}
+)
 
 onMounted(async ()=>{
   await store.dispatch("productStore/loadProducts");
 })
 
-const showModal= ref(false);
+// const showModal= ref(false);
 
-function toggleModal() {
-  if(!showModal.value){
-    console.log(showModal.value);
-    showModal.value = true;
-  }else{
-    console.log(showModal.value);
-    showModal.value = false;
-  }
+function openModal() {
+  console.log(showModal.value);
+  showModal.value = true;
+  router.push({name: 'new_product'})
+}
+function closeModal() {
+  console.log(showModal.value);
+  showModal.value = false;
+  router.push({name: 'products'})
 }
 
 const handleDelete = async (productId: string) => {
